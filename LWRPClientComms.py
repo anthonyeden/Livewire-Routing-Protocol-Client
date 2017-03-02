@@ -1,6 +1,5 @@
-""" LWRP Client (Communication Class). An Open-Source Python Client for the Axia Livewire Routing Protocol. """
+"""LWRP Client (Communication Class). An Open-Source Python Client for the Axia Livewire Routing Protocol."""
 
-import sys
 import socket
 import time
 import threading
@@ -13,7 +12,7 @@ __version__ = "0.1"
 
 
 class LWRPClientComms(threading.Thread):
-    """ This class handles all the communications with the LWRP server """
+    """This class handles all the communications with the LWRP server."""
 
     # The handle for the socket connection to the LWRP server
     sock = None
@@ -27,10 +26,8 @@ class LWRPClientComms(threading.Thread):
     # Should we be shutting down this thread? Set via self.stop()
     _stop = False
 
-
     def __init__(self, host, port):
-        """ Create a socket connection to the LWRP server """
-
+        """Create a socket connection to the LWRP server."""
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         self.sock.connect((host, port))
@@ -40,12 +37,11 @@ class LWRPClientComms(threading.Thread):
         threading.Thread.__init__(self)
 
     def stop(self):
-        """ Attempt to close this thread """
+        """Attempt to close this thread."""
         self._stop = True
 
     def run(self):
-        """ This method keeps running forever, and handles all the communication with the open LWRP socket """
-
+        """Method keeps running forever, and handles all the communication with the open LWRP socket."""
         while True:
 
             # Try and receive data from the LWRP server
@@ -74,8 +70,7 @@ class LWRPClientComms(threading.Thread):
             time.sleep(0.1)
 
     def recvUntilNewline(self):
-        """ Receives data until we get to the end of a message (also accounts for BEGIN/END blocks) """
-
+        """Receive data until we get to the end of a message (also accounts for BEGIN/END blocks)."""
         totalData = ""
         inBlock = False
 
@@ -102,8 +97,7 @@ class LWRPClientComms(threading.Thread):
                 return None
 
     def processReceivedData(self, recvData):
-        """ Processes the received data from the LWRP server. Attempts to parse it and trigger all the subscribed callbacks. """
-
+        """Process the received data from the LWRP server. Attempts to parse it and trigger all the subscribed callbacks."""
         # A dict with all the different message types we've received
         messageTypes = {}
 
@@ -140,12 +134,11 @@ class LWRPClientComms(threading.Thread):
                 self.dataSubscriptions.pop(subI)
 
     def sendCommand(self, msg):
-        """ Buffers a command to send """
+        """Buffer a command to send."""
         self.sendQueue.append(msg + "\n")
 
-    def addSubscription(self, subType, callbackObj, limit = False, filters = {}):
-        """ Adds a subscription to the list of data subscriptions """
-
+    def addSubscription(self, subType, callbackObj, limit=False, filters={}):
+        """Add a subscription to the list of data subscriptions."""
         self.dataSubscriptions.append({
             "commandType": subType,
             "callback": callbackObj,
@@ -153,8 +146,7 @@ class LWRPClientComms(threading.Thread):
         })
 
     def splitSegments(self, string):
-        """ Attempts to parse all the segments provided in return data """
-
+        """Attempt to parse all the segments provided in return data."""
         segments = []
         currentText = ""
         inSubStr = False
@@ -181,7 +173,7 @@ class LWRPClientComms(threading.Thread):
         return segments
 
     def parseMessage(self, data):
-        """ Parse the messages and put them into a list of dictionaries """
+        """Parse the messages and put them into a list of dictionaries."""
         allData = []
 
         for x in data.splitlines():
@@ -257,7 +249,6 @@ class LWRPClientComms(threading.Thread):
                 else:
                     data["pin_states"] = self.parseGPIOStates(segments[1])
 
-
             elif x[:3] == "GPO":
                 segments = self.splitSegments(x[4:])
 
@@ -286,8 +277,7 @@ class LWRPClientComms(threading.Thread):
         return allData
 
     def parseAttributes(self, sections):
-        """ Parse all known attributes for a command and return in a dictionary """
-
+        """Parse all known attributes for a command and return in a dictionary."""
         attrs = {}
 
         for i, x in enumerate(sections):
@@ -393,7 +383,7 @@ class LWRPClientComms(threading.Thread):
         return attrs
 
     def parseGPIOStates(self, states):
-        """ Turn the 'hlHLh' GPIO state strings into a dictionary  """
+        """Turn the 'hlHLh' GPIO state strings into a dictionary."""
         attrs = []
 
         for x in states:
