@@ -1,13 +1,13 @@
 # Axia Livewire Routing Protocol (LWRP) Client
 Python class that behaves as a client of the Axia Livewire Routing Protocol (LWRP).
 
-This is my attempt to implement a LWRP Client as a well-behaved Python class. It heavily utilises threading and callbacks, making it a good candidate to use in a modern event-loop driven web app.
+This is my attempt to implement a LWRP Client as a well-behaved Python class. It heavily utilises threading and callbacks, making it a good candidate to use in a modern event-loop driven web app or threaded desktop application.
 
 ## What is the LWRP?
 
-The Livewire Routing Protocol is the protocol that allows Axia Livewire hardware and software to communicate. Notably, it is used particularly by PathfinderPC and Automation System integrations with the IP Driver. All Livewire devices should implement this protocol.
+The Livewire Routing Protocol is the protocol that allows Axia Livewire hardware and software to communicate. Notably, it is used by PathfinderPC, and Automation System integrations with the IP Driver. All Livewire devices should implement this protocol.
 
-## What can I do with this class?
+## What can I do with this module?
 
 Some of the currently implemented functionality:
 
@@ -15,6 +15,8 @@ Some of the currently implemented functionality:
 * View system/network data about a Livewire device
 * View source setup details
 * View destination setup details
+* Set audio source addresses
+* Set audio destination addresses
 * View audio levels
 * Detect silence & clipping
 * View GPI & GPO pin states
@@ -27,14 +29,14 @@ Some of the currently implemented functionality:
 
 Currently you cannot:
 
-* Update source/destination setup details
+* Update source/destination setup details (you can change stream numbers, but not audio levels, names, etc.)
 * Set system parameters
 
 ## How reliable is this? How much testing have you done?
 
-Not much. We've mainly been testing against the IP Driver, although shortly we'll test against a variety of other Axia Livewire devices. Implementations vary between devices, so your milage may vary.
+This software is in 24/7/265 operation detecting and changing GPIO pin states. It is also in regular use in the [Livewire Simple Delegation Switcher](https://mediarealm.com.au/articles/livewire-simple-delegation-switcher/). LWRP implementations vary between devices, so your milage may vary. There are some subtle differences in implementation between the different generations of Axia equipment.
 
-## How to use this script
+## How to use this module
 
 To import the method, copy "LWRPClient.py" and "LWRPClientComms.py" to your project directory, then:
 
@@ -60,6 +62,14 @@ You can view a variety of pieces of information about a device:
 To get the current audio levels:
 
     print LWRP.meterData()
+
+To change a source stream number:
+
+    LWRP.setSource(1, "239.192.8.52")
+    
+To change a destination stream number:
+
+    LWRP.setDestination(1, "239.192.8.52")
 
 To setup a callback for all error messages:
 
@@ -98,9 +108,9 @@ When you're ready to close the connection, do this:
 
     LWRP.stop()
 
-##Careful!
+## Careful!
 
-This hasn't been tested extensively in production. If you make too many connections, your devices will misbehave. Additionally, there may be unknown bugs. Please test all this on a non-critical network before going anywhere near your air-chain.
+If you make too many connections, your Livewire devices may misbehave. Please test this software on a non-critical Livewire network before going anywhere near your live broadcast systems.
 
 No liability will be accepted by the developer of this software.
 
@@ -110,6 +120,7 @@ No liability will be accepted by the developer of this software.
 * [Axia Livewire Channel Numbering](http://www.telosalliance.com/images/Axia%20Products/Support%20Documents/Tech%20Tips/AxiaLivewireChannelNumbering.pdf) (Axia Website - PDF)
 * [A Look At Livewire](https://github.com/kylophone/a-look-at-livewire) (Github)
 * ["Audio Over IP: Building Pro AoIP Systems with Livewire" by Steve Church & Skip Pizzi](http://www.amazon.com/Audio-Over-IP-Building-Livewire-ebook/dp/B009OYSVV8) (2010 Book)
+* [Livewire Routing Protocol - Specification v2.0.2](http://redmine.digispot.ru/attachments/download/30138/Axia_IP-AudioDriver2.4_Windows.pdf)
 
 ## Contributing
 
