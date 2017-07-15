@@ -366,7 +366,7 @@ class LWRPClientComms(threading.Thread):
                 if x[5:12] == "0.0.0.0" or x[5:] == "":
                     attrs["address"] = None
                 elif " " in x[5:]:
-                    # Sometimes other data is provides in this field after the actual address
+                    # Sometimes other data is provided in this field after the actual address
                     # Discard that extra info and just return the address
                     attrs['address'] = x[5:].split(" ")[0]
                 else:
