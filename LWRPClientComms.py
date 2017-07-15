@@ -5,10 +5,10 @@ import time
 import threading
 
 __author__ = "Anthony Eden"
-__copyright__ = "Copyright 2015, Anthony Eden / Media Realm"
+__copyright__ = "Copyright 2015-2017, Anthony Eden / Media Realm"
 __credits__ = ["Anthony Eden"]
 __license__ = "GPL"
-__version__ = "0.1"
+__version__ = "0.2"
 
 
 class LWRPClientComms(threading.Thread):
