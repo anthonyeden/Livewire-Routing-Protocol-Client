@@ -121,6 +121,14 @@ class LWRPClient():
         self.waitingForCallback = True
         return self.waitForCallback()
 
+    def setSource(self, chnum, multicast_addr): 
+        """Set the source address for a specified channel"""
+        self.LWRP.sendCommand("SRC " + str(chnum) + " RTPA:" + str(multicast_addr))
+    
+    def setDestination(self, chnum, multicast_addr): 
+        """Set the output address for a specified channel"""
+        self.LWRP.sendCommand("DST " + str(chnum) + " ADDR:" + str(multicast_addr))
+
     def setSilenceThreshold(self, io, chnum, threshold, timems):
         """Set a silence threshold and time for a specific I/O channel."""
         if io == "in":
