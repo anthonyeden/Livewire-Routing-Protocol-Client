@@ -5,10 +5,10 @@ import time
 from LWRPClientComms import LWRPClientComms
 
 __author__ = "Anthony Eden"
-__copyright__ = "Copyright 2015-2017, Anthony Eden / Media Realm"
+__copyright__ = "Copyright 2015-2018, Anthony Eden / Media Realm"
 __credits__ = ["Anthony Eden"]
 __license__ = "GPL"
-__version__ = "0.2"
+__version__ = "0.3"
 
 
 class LWRPClient():
@@ -198,7 +198,7 @@ class LWRPClient():
         self.LWRP.addSubscription("GPO", callback, False)
         self.LWRP.sendCommand("ADD GPO")
 
-    def setGPO(self, chnum, pin, state):
+    def setGPO(self, chnum, pin, state, type = "GPO"):
         """Set the GPO pin state for a specific channel."""
         chnum = str(int(chnum))
         pinstr = ""
@@ -217,7 +217,11 @@ class LWRPClient():
             else:
                 pinstr += "x"
 
-        self.LWRP.sendCommand("GPO " + chnum + " " + pinstr)
+        self.LWRP.sendCommand(type + " " + chnum + " " + pinstr)
+    
+    def setGPI(self, chnum, pin, state):
+        """Set the GPI pin state for a specific channel."""
+        self.setGPO(chnum, pin, state, "GPI")
 
     def setGPIText(self, chnum, commandText):
         """Set the GPI text command for a specific channel."""
