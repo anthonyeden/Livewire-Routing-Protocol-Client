@@ -5,29 +5,30 @@ import time
 import threading
 
 __author__ = "Anthony Eden"
-__copyright__ = "Copyright 2015-2017, Anthony Eden / Media Realm"
+__copyright__ = "Copyright 2015-2018, Anthony Eden / Media Realm"
 __credits__ = ["Anthony Eden"]
 __license__ = "GPL"
-__version__ = "0.2"
+__version__ = "0.4"
 
 
 class LWRPClientComms(threading.Thread):
     """This class handles all the communications with the LWRP server."""
 
-    # The handle for the socket connection to the LWRP server
-    sock = None
-
-    # A list of all commands to send to the LWRP server
-    sendQueue = []
-
-    # A list of data types to subscribe to (with callbacks)
-    dataSubscriptions = []
-
-    # Should we be shutting down this thread? Set via self.stop()
-    _stop = False
-
     def __init__(self, host, port):
         """Create a socket connection to the LWRP server."""
+
+        # The handle for the socket connection to the LWRP server
+        self.sock = None
+
+        # A list of all commands to send to the LWRP server
+        self.sendQueue = []
+
+        # A list of data types to subscribe to (with callbacks)
+        self.dataSubscriptions = []
+
+        # Should we be shutting down this thread? Set via self.stop()
+        self._stop = False
+
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         self.sock.connect((host, port))
@@ -343,7 +344,7 @@ class LWRPClientComms(threading.Thread):
                 else:
                     attrs["rtp"] = False
             elif x[:4] == "RTPA":
-                attrs["rtp_destination"] = x[6:]
+                attrs["rtp_destination"] = x[5:]
             elif x[:4] == "PSNM":
                 # Unknown attribute
                 attrs["_PSNM"] = x[5:]
@@ -366,7 +367,7 @@ class LWRPClientComms(threading.Thread):
                 if x[5:12] == "0.0.0.0" or x[5:] == "":
                     attrs["address"] = None
                 elif " " in x[5:]:
-                    # Sometimes other data is provided in this field after the actual address
+                    # Sometimes other data is provides in this field after the actual address
                     # Discard that extra info and just return the address
                     attrs['address'] = x[5:].split(" ")[0]
                 else:

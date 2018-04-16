@@ -8,21 +8,22 @@ __author__ = "Anthony Eden"
 __copyright__ = "Copyright 2015-2018, Anthony Eden / Media Realm"
 __credits__ = ["Anthony Eden"]
 __license__ = "GPL"
-__version__ = "0.3"
+__version__ = "0.4"
 
 
 class LWRPClient():
     """Provides a friendly API for the Livewire Routing Protocol."""
 
-    # This is our access to the LWRP
-    LWRP = None
-
-    # This variable gets given the callback data, ready to be processed by a waiting function
-    waitingForCallback = False
-    callbackData = None
-
     def __init__(self, host, port):
         """Init LWRP connection."""
+
+        # This is our access to the LWRP
+        self.LWRP = None
+
+        # This variable gets given the callback data, ready to be processed by a waiting function
+        self.waitingForCallback = False
+        self.callbackData = None
+
         self.LWRP = LWRPClientComms(host, port)
         self.LWRP.start()
 
