@@ -8,7 +8,7 @@ __author__ = "Anthony Eden"
 __copyright__ = "Copyright 2015-2018, Anthony Eden / Media Realm"
 __credits__ = ["Anthony Eden"]
 __license__ = "GPL"
-__version__ = "0.5"
+__version__ = "0.6"
 
 
 class LWRPClientComms(threading.Thread):
@@ -68,7 +68,8 @@ class LWRPClientComms(threading.Thread):
                 break
 
             # Lower this number to receive data quicker
-            time.sleep(0.1)
+            if len(self.sendQueue) == 0:
+                time.sleep(0.1)
 
     def recvUntilNewline(self):
         """Receive data until we get to the end of a message (also accounts for BEGIN/END blocks)."""
