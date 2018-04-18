@@ -22,10 +22,12 @@ Some of the currently implemented functionality:
 * View GPI & GPO pin states
 * Set GPO pin states
 * Set GPI & GPO command text
+* Set xNode Matrix Mixer Points & Levels
 * Subscribe to changes in source/destination configuration
 * Subscribe to changes to GPIO pin states
 * Subscribe to silence/clipping alerts
 * Subscribe to error notifications
+* Subscribe to xNode Matrix Mixer changes
 
 Currently you cannot:
 
@@ -34,7 +36,7 @@ Currently you cannot:
 
 ## How reliable is this? How much testing have you done?
 
-This software is in 24/7/265 operation detecting and changing GPIO pin states. It is also in regular use in the [Livewire Simple Delegation Switcher](https://mediarealm.com.au/articles/livewire-simple-delegation-switcher/). LWRP implementations vary between devices, so your milage may vary. There are some subtle differences in implementation between the different generations of Axia equipment.
+This software is in 24/7/265 operation with the [Livewire Simple Delegation Switcher](https://mediarealm.com.au/articles/livewire-simple-delegation-switcher/). LWRP implementations vary between devices, so your milage may vary. There are some subtle differences in implementation between the different generations of Axia equipment. However, over time we've found this module to work quite well.
 
 ## How to use this module
 

@@ -8,7 +8,7 @@ __author__ = "Anthony Eden"
 __copyright__ = "Copyright 2015-2018, Anthony Eden / Media Realm"
 __credits__ = ["Anthony Eden"]
 __license__ = "GPL"
-__version__ = "0.4"
+__version__ = "0.5"
 
 
 class LWRPClient():
@@ -237,3 +237,28 @@ class LWRPClient():
         commandText = str(commandText).replace('"', '\"')[:128]
 
         self.LWRP.sendCommand("GPO " + chnum + " CMD:\"" + commandText + "\"")
+    
+    def matrixSub(self, callback):
+        """Subscribe to matrix changes."""
+        self.LWRP.addSubscription("MATRIX", callback, False)
+        self.LWRP.sendCommand("MIX")
+
+    def matrixSet(self, dstchnum, srcchnum, srclevel):
+        """Sets a matrix mix point for a specific destination channel."""
+        chnum = str(int(dstchnum))
+        if srclevel != "-":
+            srclevel = str(int(srclevel))
+
+        if isinstance(srcchnum, list):
+            changes = ""
+            for ch in srcchnum:
+                changes += str(int(ch)) + ":" + srclevel + " "
+
+        else:
+            changes = str(int(srcchnum)) + ":" + srclevel
+
+        self.LWRP.sendCommand("MIX " + chnum + " " + changes)
+    
+    def matrixRelease(self, dstchnum, srcchnum):
+        """ Releases a matrix mix point. """
+        self.matrixSet(dstchnum, srcchnum, "-")

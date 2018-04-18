@@ -8,7 +8,7 @@ __author__ = "Anthony Eden"
 __copyright__ = "Copyright 2015-2018, Anthony Eden / Media Realm"
 __credits__ = ["Anthony Eden"]
 __license__ = "GPL"
-__version__ = "0.4"
+__version__ = "0.5"
 
 
 class LWRPClientComms(threading.Thread):
@@ -262,6 +262,21 @@ class LWRPClientComms(threading.Thread):
                 else:
                     data["pin_states"] = self.parseGPIOStates(segments[1])
 
+            elif x[:3] == "MIX":
+                segments = self.splitSegments(x[4:])
+
+                data["type"] = "MATRIX"
+                data["dst"] = int(segments[0])
+                data["src"] = []
+
+                for point in segments[1:]:
+                    point = point.split(":")
+                    if len(point) >= 2 and point[0] != "" and point[1] != "-":
+                        data["src"].append({
+                            "num": int(point[0]),
+                            "level": int(point[1]),
+                        })
+
             if x[:5] == "ERROR":
                 data['type'] = "ERROR"
                 data["message"] = x[6:]
@@ -313,6 +328,12 @@ class LWRPClientComms(threading.Thread):
                 attrs["GPI_count"] = x[5:]
             elif x[:4] == "NGPO":
                 attrs["GPO_count"] = x[5:]
+            elif x == "MIXCFG:1":
+                attrs["matrix_enabled"] = True
+            elif x == "MIXCFG:0":
+                attrs["matrix_enabled"] = False
+            elif x[:3] == "MIX":
+                attrs["matrix_channels"] = x[4:]
             elif x[:7] == "address":
                 attrs["ip_address"] = sections[i + 1]
             elif x[:7] == "netmask":
